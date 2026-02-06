@@ -1,0 +1,43 @@
+﻿@model CourseManagement
+
+<h2 class="mb-4 text-center">Add New Course</h2>
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <form asp-action="Create" method="post" class="card p-4 shadow-sm">
+
+            <div class="mb-3">
+                <label asp-for="CourseName" class="form-label"></label>
+                <input asp-for="CourseName" class="form-control" />
+                <span asp-validation-for="CourseName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Semester" class="form-label"></label>
+                <select asp-for="Semester" class="form-select">
+                    <option value="">--Select semester--</option>
+                    <option>1st Semester</option>
+                    <option>2nd Semester</option>
+                    <option>3rd Semester</option>
+                    <option>4th Semester</option>
+                    <option>5th Semester</option>
+                    <option>6th Semester</option>
+                </select>
+                <span asp-validation-for="Semester" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Fees" class="form-label"></label>
+                <input asp-for="Fees" type="number" class="form-control" />
+                <span asp-validation-for="Fees" class="text-danger"></span>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <button type="submit" class="btn btn-success px-4">Save</button>
+                <a asp-action="Index" class="btn btn-secondary px-4">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+</div>

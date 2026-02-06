@@ -15,9 +15,12 @@ namespace CrudProject.Models
         [EmailAddress]
         public string? Email { get; set; }
 
+        public string Semester { get; set; }
         public int CourseId { get; set; }
         public string? Course { get; set; }
         public decimal Fees { get; set; }
+
+        public int TeacherId { get; set; }
 
         [Required]
         [Display(Name = "Enrollment Date")]

@@ -1,0 +1,46 @@
+﻿@model CourseManagement
+
+<h2 class="mb-4 text-center">Course Details</h2>
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card p-4 shadow-sm">
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Course Name</label>
+                <p class="form-control-plaintext">
+                    @Model.CourseName
+                </p>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Semester</label>
+                <p class="form-control-plaintext">
+                    @Model.Semester
+                </p>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Fees</label>
+                <p class="form-control-plaintext">
+                    @Model.Fees
+                </p>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <a asp-action="Edit"
+                   asp-route-id="@Model.CourseId"
+                   class="btn btn-warning px-4">
+                    Edit
+                </a>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary px-4">
+                    Back to List
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>

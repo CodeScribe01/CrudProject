@@ -26,7 +26,19 @@
                     <input asp-for="Email" class="form-control" type="email" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
-
+                <div class="mb-3">
+                    <label asp-for="Semester" class="form-label"></label>
+                    <select asp-for="Semester" class="form-select">
+                        <option value="">--Select semester--</option>
+                        <option>1st Semester</option>
+                        <option>2nd Semester</option>
+                        <option>3rd Semester</option>
+                        <option>4th Semester</option>
+                        <option>5th Semester</option>
+                        <option>6th Semester</option>
+                    </select>
+                    <span asp-validation-for="Semester" class="text-danger"></span>
+                </div>
                 <div class="mb-3">
                     <label class="form-label">Course</label>
                     <select asp-for="CourseId" class="form-select"
@@ -39,6 +51,10 @@
                 <div class="mb-3">
                     <label asp-for="Fees" class="form-label"></label>
                     <input asp-for="Fees" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label>Course Teacher</label>
+                    <input type="text" id="TeacherName" class="form-control" readonly />
                 </div>
 
                 <div class="mb-3">
@@ -72,23 +88,63 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
     <script>
         $(document).ready(function () {
-            $("#CourseId").change(function () {
-                var courseId = $(this).val();
-                if (courseId !== "") {
+
+            // Semester → Courses
+            $("#Semester").change(function () {
+
+                var semester = $(this).val();
+
+                $("#CourseId").empty()
+                    .append('<option value="">-- Select Course --</option>');
+
+                $("#Fees").val("");
+                $("#TeacherName").val("");
+
+                if (semester !== "") {
                     $.ajax({
-                        url: '/Students/GetCourseFees',
+                        url: '/Students/GetCoursesBySemester',
                         type: 'GET',
-                        data: { courseId: courseId },
-                        success: function (response) {
-                            $("#Fees").val(response);
+                        data: { semester: semester },
+                        success: function (data) {
+                            $.each(data, function (i, item) {
+                                $("#CourseId").append(
+                                    `<option value="${item.courseId}">
+                                        ${item.courseName}
+                                     </option>`
+                                );
+                            });
                         }
                     });
-                } else {
-                    $("#Fees").val("");
                 }
             });
+
+            // Course → Fees + Teacher
+            $("#CourseId").change(function () {
+
+                var courseId = $(this).val();
+
+                $("#Fees").val("");
+                $("#TeacherName").val("");
+
+                if (courseId !== "") {
+                    $.ajax({
+                        url: '/Students/GetCourseDetails',
+                        type: 'GET',
+                        data: { courseId: courseId },
+                        success: function (data) {
+                            if (data !== null) {
+                                $("#Fees").val(data.fees);
+                                $("#TeacherName").val(data.teachers.join(", "));
+                            }
+                        }
+                    });
+                }
+            });
+
         });
     </script>
 }
+

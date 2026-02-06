@@ -12,6 +12,8 @@ namespace CrudProject.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<StudentUsers> StudentsUsers { get; set; }
         public DbSet<CourseManagement> CourseManagement { get; set; }
+        public DbSet<Teachers> Teachers { get; set; }
+        public DbSet<TeacherCourseMapping> TeacherCourseMapping{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

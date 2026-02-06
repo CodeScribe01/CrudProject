@@ -77,3 +77,43 @@ a {
 select.control-label {
     padding: 8px 10px;
 }
+
+/*new added*/
+.card {
+    border-radius: 12px;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #0d6efd, #0a58ca);
+    color: #fff;
+    border-radius: 12px 12px 0 0;
+}
+
+    .card-header h3 {
+        font-weight: 600;
+    }
+
+.table th {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table td {
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.btn-group .btn {
+    min-width: 60px;
+}
+
+.text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

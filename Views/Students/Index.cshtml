@@ -6,44 +6,58 @@
     ViewData["Title"] = "Students";
 }
 
-<div class="container mt-4">
-    <h1>Students</h1>
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">📚 Students</h3>
+            <a asp-action="Create" class="btn btn-primary">
+                + Add Student
+            </a>
+        </div>
 
-    <p>
-        <a asp-action="Create" class="btn btn-dark">Create New</a>
-    </p>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Semester</th>
+                            <th>Course</th>
+                            <th>Fees</th>
+                            <th>Enrollment</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
 
-    <table class="table table-bordered">
-        <thead class="table-dark">
-            <tr>
-                <th>@Html.DisplayNameFor(model => model.Name)</th>
-                <th>@Html.DisplayNameFor(model => model.Email)</th>
-                <th>@Html.DisplayNameFor(model => model.Course)</th>
-                <th>@Html.DisplayNameFor(model => model.Fees)</th>
-                <th>@Html.DisplayNameFor(model => model.EnrollmentDate)</th>
-                <th>@Html.DisplayNameFor(model => model.Phone)</th>
-                <th>@Html.DisplayNameFor(model => model.Address)</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Course)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Fees)</td>
-                    <td>@Html.DisplayFor(modelItem => item.EnrollmentDate)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Phone)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Address)</td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.StudentId" class="btn btn-sm btn-outline-dark">Edit</a>
-                        <a asp-action="Details" asp-route-id="@item.StudentId" class="btn btn-sm btn-outline-dark">Details</a>
-                        <a asp-action="Delete" asp-route-id="@item.StudentId" class="btn btn-sm btn-dark">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@item.Name</td>
+                                <td>@item.Email</td>
+                                <td>@item.Semester</td>
+                                <td>@item.Course</td>
+                                <td>₹ @item.Fees</td>
+                                <td>@item.EnrollmentDate.ToShortDateString()</td>
+                                <td>@item.Phone</td>
+                                <td class="text-truncate" style="max-width: 150px;">
+                                    @item.Address
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-action="Edit" asp-route-id="@item.StudentId" class="btn btn-outline-secondary">Edit</a>
+                                        <a asp-action="Details" asp-route-id="@item.StudentId" class="btn btn-outline-info">View</a>
+                                        <a asp-action="Delete" asp-route-id="@item.StudentId" class="btn btn-outline-danger">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>

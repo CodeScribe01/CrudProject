@@ -1,0 +1,67 @@
+﻿@model CrudProject.Models.Teachers
+@using CrudProject.Models
+
+@{
+    ViewData["Title"] = "Edit Teacher";
+}
+
+<div class="container mt-4">
+    <h1>Edit Teacher</h1>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                <input type="hidden" asp-for="TeacherId" />
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">Teacher's Name</label>
+                    <input asp-for="Name" class="form-control"  />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="JoiningDate" class="form-label">Joining Date</label>
+                    <input asp-for="JoiningDate" type="date" class="form-control"  />
+                    <span asp-validation-for="JoiningDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Salary" class="form-label">Salary</label>
+                    <input asp-for="Salary" class="form-control" />
+                    <span asp-validation-for="Salary" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Phone" class="form-label">Phone</label>
+                    <input asp-for="Phone" class="form-control" type="number" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" type="email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="IsActive" class="form-check-label">Is Active</label>
+                    <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                </div>
+                <span asp-validation-for="IsActive" class="text-danger h3"></span>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-dark">Save</button>
+                    <a asp-action="Index" class="btn btn-outline-dark">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

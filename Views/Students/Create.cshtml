@@ -5,90 +5,167 @@
     ViewData["Title"] = "Create Student";
 }
 
-<div class="container mt-4">
-    <h1>Create Student</h1>
-    <hr />
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-9">
 
-    <div class="row">
-        <div class="col-md-6">
-            <form asp-action="Create" method="post">
-                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
-
-                <div class="mb-3">
-                    <label asp-for="Name" class="form-label"></label>
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">Create Student</h4>
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="Email" class="form-label"></label>
-                    <input asp-for="Email" class="form-control" type="email" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
 
-                <div class="mb-3">
-                    <label class="form-label">Course</label>
-                    <select asp-for="CourseId" class="form-select"
-                            asp-items="@(new SelectList((List<CourseManagement>)ViewData["Course"], "CourseId", "CourseName"))">
-                        <option value="">--Select Course--</option>
-                    </select>
-                    <span asp-validation-for="CourseId" class="text-danger"></span>
-                </div>
+                        <div asp-validation-summary="ModelOnly"
+                             class="alert alert-danger small"></div>
 
-                <div class="mb-3">
-                    <label asp-for="Fees" class="form-label"></label>
-                    <input asp-for="Fees" class="form-control" readonly />
-                </div>
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label fw-semibold"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
 
-                <div class="mb-3">
-                    <label asp-for="EnrollmentDate" class="form-label"></label>
-                    <input asp-for="EnrollmentDate" class="form-control" type="date" />
-                    <span asp-validation-for="EnrollmentDate" class="text-danger"></span>
-                </div>
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label fw-semibold"></label>
+                            <input asp-for="Email" class="form-control" type="email" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
 
-                <div class="mb-3">
-                    <label asp-for="Phone" class="form-label"></label>
-                    <input asp-for="Phone" class="form-control" />
-                    <span asp-validation-for="Phone" class="text-danger"></span>
-                </div>
+                        <div class="mb-3">
+                            <label asp-for="Semester" class="form-label fw-semibold"></label>
+                            <select asp-for="Semester" class="form-select">
+                                <option value="">-- Select Semester --</option>
+                                <option>1st Semester</option>
+                                <option>2nd Semester</option>
+                                <option>3rd Semester</option>
+                                <option>4th Semester</option>
+                                <option>5th Semester</option>
+                                <option>6th Semester</option>
+                            </select>
+                            <span asp-validation-for="Semester" class="text-danger small"></span>
+                        </div>
 
-                <div class="mb-3">
-                    <label asp-for="Address" class="form-label"></label>
-                    <input asp-for="Address" class="form-control" />
-                    <span asp-validation-for="Address" class="text-danger"></span>
-                </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Course</label>
+                            <select asp-for="CourseId"
+                                    class="form-select"
+                                    asp-items="@(new SelectList((List<CourseManagement>)ViewData["Course"], "CourseId", "CourseName"))">
+                                <option value="">-- Select Course --</option>
+                            </select>
+                            <span asp-validation-for="CourseId" class="text-danger small"></span>
+                        </div>
 
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-dark">Create</button>
-                    <a asp-action="Index" class="btn btn-outline-dark">Back to List</a>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="Fees" class="form-label fw-semibold"></label>
+                                <input asp-for="Fees" class="form-control" readonly />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Course Teacher</label>
+                                <input type="text" id="TeacherName" class="form-control" readonly />
+                            </div>
+                        </div>
+
+                        <div class="mb-3 mt-3">
+                            <label asp-for="EnrollmentDate" class="form-label fw-semibold"></label>
+                            <input asp-for="EnrollmentDate" class="form-control" type="date" />
+                            <span asp-validation-for="EnrollmentDate" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Phone" class="form-label fw-semibold"></label>
+                            <input asp-for="Phone" class="form-control" />
+                            <span asp-validation-for="Phone" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Address" class="form-label fw-semibold"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-dark px-4">
+                                Create
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                                Back to List
+                            </a>
+                        </div>
+
+                    </form>
                 </div>
-            </form>
+            </div>
+
         </div>
     </div>
 </div>
+
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
     <script>
         $(document).ready(function () {
-            $("#CourseId").change(function () {
-                var courseId = $(this).val();
-                if (courseId !== "") {
+
+            // Semester → Courses
+            $("#Semester").change(function () {
+
+                var semester = $(this).val();
+
+                $("#CourseId").empty()
+                    .append('<option value="">-- Select Course --</option>');
+
+                $("#Fees").val("");
+                $("#TeacherName").val("");
+
+                if (semester !== "") {
                     $.ajax({
-                        url: '/Students/GetCourseFees',
+                        url: '/Students/GetCoursesBySemester',
                         type: 'GET',
-                        data: { courseId: courseId },
-                        success: function (response) {
-                            $("#Fees").val(response);
+                        data: { semester: semester },
+                        success: function (data) {
+                            $.each(data, function (i, item) {
+                                $("#CourseId").append(
+                                    `<option value="${item.courseId}">
+                                        ${item.courseName}
+                                     </option>`
+                                );
+                            });
                         }
                     });
-                } else {
-                    $("#Fees").val("");
                 }
             });
+
+            // Course → Fees + Teacher
+            $("#CourseId").change(function () {
+
+                var courseId = $(this).val();
+
+                $("#Fees").val("");
+                $("#TeacherName").val("");
+
+                if (courseId !== "") {
+                    $.ajax({
+                        url: '/Students/GetCourseDetails',
+                        type: 'GET',
+                        data: { courseId: courseId },
+                        success: function (data) {
+                            if (data !== null) {
+                                $("#Fees").val(data.fees);
+                                $("#TeacherName").val(data.teachers.join(", "));
+                            }
+                        }
+                    });
+                }
+            });
+
         });
     </script>
 }
+
 

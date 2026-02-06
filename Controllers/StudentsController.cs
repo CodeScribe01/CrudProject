@@ -1,7 +1,10 @@
 ﻿using CrudProject.Data;
 using CrudProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
 namespace CrudProject.Controllers
@@ -51,6 +54,7 @@ namespace CrudProject.Controllers
             return View(student);
         }
 
+        //[Authorize(Roles = "Admin , Teacher")]
         public IActionResult Create()
         {
             if (!IsLoggedIn())
@@ -59,7 +63,7 @@ namespace CrudProject.Controllers
             ViewData["Course"] = _context.CourseManagement.ToList();
             return View();
         }
-
+        //[Authorize(Roles ="Admin , Teacher")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Student model)
@@ -72,23 +76,28 @@ namespace CrudProject.Controllers
 
             // Check for existing User
             var existingStudent = await _context.Students
-                .FirstOrDefaultAsync(u => u.Email == model.Email);
+                .FirstOrDefaultAsync(u => u.Email == model.Email || u.Phone == model.Phone);
 
             if (existingStudent != null)
+                ModelState.AddModelError("", "Email or Phone already exist.");
+            
+            if(string.IsNullOrWhiteSpace(model.Email))
             {
-                ModelState.AddModelError("", "Email already exists");
+                ModelState.AddModelError("Email", "Email is Required");
             }
-
-
-            if (!Validation.IsValidEmail(model.Email))
-            {
+            else if (!Validation.IsValidEmail(model.Email))
                 ModelState.AddModelError("Email", "Invalid Email");
-            }
 
-            if (!Validation.IsValidPhone(model.Phone))
+            if (string.IsNullOrWhiteSpace(model.Phone))
             {
-                ModelState.AddModelError("Phone", "Invalid Phone Number");
+                ModelState.AddModelError("Phone", "Phone is required");
             }
+            else if (!Validation.IsValidPhone(model.Phone))
+                ModelState.AddModelError("Phone", "Invalid Phone Number");
+
+            if (string.IsNullOrWhiteSpace(model.Address))
+                ModelState.AddModelError("Address", "Address is required");
+            
 
 
             var course = await _context.CourseManagement
@@ -96,8 +105,10 @@ namespace CrudProject.Controllers
 
             if (course == null)
             {
-                ModelState.AddModelError("CourseId", "Please select a valid course");
+                ViewData["Course"] = _context.CourseManagement.ToList();
+                return View(model);
             }
+
 
             if (!ModelState.IsValid)
             {
@@ -105,25 +116,16 @@ namespace CrudProject.Controllers
                 return View(model);
             }
 
-            var newStudent = new Student
-            {
-                Name = model.Name,
-                Email = model.Email,
-                Course = course.CourseName,
-                CourseId = model.CourseId,
-                Fees = course.Fees,
-                EnrollmentDate = model.EnrollmentDate,
-                Phone = model.Phone,
-                Address = model.Address
-            };
+            model.Course = course.CourseName;
+            model.Fees = course.Fees;
 
-            _context.Students.Add(newStudent);
+            _context.Students.Add(model);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
 
-
+        //[Authorize(Roles ="Admin , Teacher")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (!IsLoggedIn())
@@ -144,10 +146,10 @@ namespace CrudProject.Controllers
             return View(student);
         }
 
-
+        //[Authorize(Roles = "Admin,Teacher")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Student student)
+        public async Task<IActionResult> Edit(int id, Student student ,Student Model)
         {
             if (!IsLoggedIn())
                 return RedirectToAction("Login", "Account");
@@ -160,16 +162,35 @@ namespace CrudProject.Controllers
                 return NotFound();
             }
 
-            if (!Validation.IsValidEmail(student.Email))
-            {
+            //Check for existing User
+
+            //var existStudent = await _context.Students
+            //   .FirstOrDefaultAsync(u => u.Email == student.Email);
+
+            //if (existStudent != null)
+            //    {
+            //        ModelState.AddModelError("", "Email already exists");
+            //    }
+
+            //var existingPhone = await _context.Students
+            //    .FirstOrDefaultAsync(p => p.Phone == student.Phone);
+            //if (existingPhone != null)
+            //{
+            //    ModelState.AddModelError("", "Phone already Exist.");
+            //}
+
+            if(string.IsNullOrWhiteSpace(Model.Email))
+                ModelState.AddModelError("Email","Email is required");
+            else if (!Validation.IsValidEmail(student.Email))
                 ModelState.AddModelError("Email", "Invalid Email Format");
-            }
 
-            if (!Validation.IsValidPhone(student.Phone))
-            {
+            if (string.IsNullOrWhiteSpace(Model.Phone))
+                ModelState.AddModelError("Phone", "Phone is required");
+            else if (!Validation.IsValidPhone(student.Phone))
                 ModelState.AddModelError("Phone", "Invalid Phone Number");
-            }
 
+            if (string.IsNullOrWhiteSpace(Model.Address))
+                ModelState.AddModelError("Address", "Address is required");
 
             var course = await _context.CourseManagement
                 .FirstOrDefaultAsync(k => k.CourseId == student.CourseId);
@@ -201,6 +222,7 @@ namespace CrudProject.Controllers
                 existingStudent.EnrollmentDate = student.EnrollmentDate;
                 existingStudent.Phone = student.Phone;
                 existingStudent.Address = student.Address;
+                existingStudent.Semester = student.Semester;
 
                 await _context.SaveChangesAsync();
             }
@@ -218,7 +240,7 @@ namespace CrudProject.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
+        //[Authorize (Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (!IsLoggedIn())
@@ -239,7 +261,7 @@ namespace CrudProject.Controllers
             return View(student);
         }
 
-
+        //[Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -262,50 +284,47 @@ namespace CrudProject.Controllers
             return _context.Students.Any(e => e.StudentId == id);
         }
 
-        ////AddCourse
-        // //GET
-        // public async Task<IActionResult> AddCourse(int? id)
-        // {
-        //     return View();
-        // }
 
-        // //Post
-        // [HttpPost]
-        // public async Task<IActionResult> AddCourse( CourseManagement model)
-        // {
-        //     var course = await _context.Students.FindAsync();
-        //     if(course != null)
-        //     {
-        //         ModelState.AddModelError("Course", "Course already exist");
-        //         return View();
-        //     }
+        [HttpGet]
+        public IActionResult GetCoursesBySemester(string semester)
+        {
+            var courses = _context.CourseManagement
+                .Where(c => c.Semester == semester)
+                .Select(c => new
+                {
+                    c.CourseId,
+                    c.CourseName
+                })
+                .ToList();
 
-        //     //add course
-
-        //     CourseManagement Addcourse = new CourseManagement
-        //     {
-        //         CourseName = model.CourseName,
-        //         Fees = model.Fees,
-        //         Semester = model.Semester
-        //     };
-
-        //     _context.CourseManagement.Add(Addcourse);
-        //     await _context.SaveChangesAsync();
-        //     return RedirectToAction("Index");
-
-        // }
+            return Json(courses);
+        }
 
 
         [HttpGet]
-        public IActionResult GetCourseFees(int courseId)
+        public IActionResult GetCourseDetails(int courseId)
         {
             var course = _context.CourseManagement
                                  .FirstOrDefault(c => c.CourseId == courseId);
 
+           
+
             if (course == null)
                 return Json(0);
 
-            return Json(course.Fees);
+            var teachers = (from m in _context.TeacherCourseMapping
+                            join t in _context.Teachers
+                                on m.TeacherId equals t.TeacherId
+                            where m.CourseId == courseId
+                                  && m.IsActive == true
+                                  && t.IsActive == true
+                            select t.Name).ToList();
+
+            return Json(new
+            {
+                fees = course.Fees,
+                Teachers = teachers
+            });
         }
 
 

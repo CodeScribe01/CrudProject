@@ -41,7 +41,7 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>(); 
     if (!context.CourseManagement.Any())
     {
         context.CourseManagement.AddRange(

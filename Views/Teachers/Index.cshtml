@@ -1,0 +1,66 @@
+﻿
+@model IEnumerable<CrudProject.Models.Teachers>
+
+@{
+    ViewData["Title"] = "Teachers";
+}
+
+<div class="container mt-4">
+    <h1>Teachers</h1>
+
+    <p>
+        <a asp-action="Create" class="btn btn-dark">Create New</a>
+    </p>
+    <p>
+        <div class="d-flex justify-content-end mb-3">
+            <a asp-controller="Teachers"
+               asp-action="MapCourses"
+               class="btn btn-primary">
+                Map Teacher Course
+            </a>
+        </div>
+
+    </p>
+
+
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Email)</th>
+                <th>@Html.DisplayNameFor(model => model.Phone)</th>
+                <th>@Html.DisplayNameFor(model => model.Salary)</th>
+                <th>@Html.DisplayNameFor(model => model.JoiningDate)</th>
+                <th>@Html.DisplayNameFor(model => model.IsActive)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Salary)</td>
+                    <td>@Html.DisplayFor(modelItem => item.JoiningDate)</td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Inactive</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.TeacherId" class="btn btn-sm btn-outline-dark">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.TeacherId" class="btn btn-sm btn-outline-dark">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.TeacherId" class="btn btn-sm btn-dark">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
